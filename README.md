@@ -1,1 +1,1 @@
-Synapse Dat ware house
+Synapse Datawarehouse
