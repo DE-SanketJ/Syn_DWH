@@ -1,0 +1,17 @@
+{
+	"name": "Table_Creation",
+	"properties": {
+		"content": {
+			"query": "create MASTER key ENCRYPTION by PASSWORD = 'Xyz@#999333$$$'\ncreate DATABASE SCOPED CREDENTIAL SasToken\nwith IDENTITY = 'shared access signature',\nSECRET ='sv=2026-02-06&ss=b&srt=sco&sp=rwdlacyx&se=2026-10-27T23:30:48Z&st=2026-10-27T15:15:48Z&spr=https&sig=mqGEdw%2BbhZQZ9C3kJ7zP2PV3DyCTqvHQAY41jImnKJM%3D'\n\n\nCREATE EXTERNAL DATA SOURCE Demo WITH\n(\n\tLOCATION = 'https://synapsedevadls.dfs.core.windows.net/data',\n\tCREDENTIAL=SasToken\n)\n\n\ncreate EXTERNAL file format TextfileFormat WITH(\nFORMAT_TYPE=DELIMITEDTEXT,\nFORMAT_OPTIONS(\n    FIELD_TERMINATOR= ',',\n    FIRST_ROW=2\n))\n\n\ncreate EXTERNAL TABLE demo(\n    orderid\tint,\n    orderdate\tDATE,\n    customerid\tINT,\n    totalamount\tdecimal,\n    status varchar(100)\n)\nWITH\n(\n    LOCATION='orders1.csv',\n    DATA_SOURCE=Demo,\n    FILE_FORMAT=TextfileFormat\n)\n\n\nselect * from dbo.demo",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "salesdb",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
