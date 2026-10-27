@@ -1,0 +1,17 @@
+{
+	"name": "InsuranceExtTable",
+	"properties": {
+		"content": {
+			"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseDelimitedTextFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseDelimitedTextFormat] \n\tWITH ( FORMAT_TYPE = DELIMITEDTEXT ,\n\t       FORMAT_OPTIONS (\n\t\t\t FIELD_TERMINATOR = ',',\n\t\t\t FIRST_ROW = 2,\n\t\t\t USE_TYPE_DEFAULT = FALSE\n\t\t\t))\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'data_synapsedevadls_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [data_synapsedevadls_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://data@synapsedevadls.dfs.core.windows.net' \n\t)\nGO\n\nCREATE EXTERNAL TABLE dbo.insurance (\n\t[insurance_provider_id] bigint,\n\t[provider_name] nvarchar(4000),\n\t[provider_type] nvarchar(4000),\n\t[contact_email] nvarchar(4000),\n\t[coverage_region] nvarchar(4000)\n\t)\n\tWITH (\n\tLOCATION = 'insurance_providers.csv',\n\tDATA_SOURCE = [data_synapsedevadls_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseDelimitedTextFormat]\n\t)\nGO\n\n\nSELECT TOP 100 * FROM dbo.insurance\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "salesdb",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
